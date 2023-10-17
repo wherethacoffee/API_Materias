@@ -1,0 +1,97 @@
+/* Estilos personalizados */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+}
+
+.container {
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar {
+  background-color: #669999; /* Color de fondo azul */
+  color: #fff; /* Texto blanco */
+  padding: 15px;
+}
+
+/* Estilos para el formulario */
+.form-group {
+  margin-bottom: 10px;
+}
+
+.form-group label {
+  font-weight: bold;
+  color: #333;
+}
+
+.form-control {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.btn-container {
+  text-align: center; /* Centrar los botones en el formulario */
+}
+
+.btn {
+  background-color: #cc99ff; /* Color de fondo pastel */
+  color: #333; /* Texto oscuro */
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-right: 5px;
+  border-radius: 5px; /* Esquinas redondeadas */
+}
+
+/* Estilos para la tabla */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.table th,
+.table td {
+  padding: 5px; /* Reducir el espaciado dentro de las celdas */
+  width: 10%; /* Reducir el ancho de las celdas al 10% del contenedor */
+  text-align: center;
+}
+
+.table th {
+  background-color: #ff9933; /* Color de fondo azul */
+  color: #fff; /* Texto blanco */
+}
+
+.table tr:hover {
+  background-color: #c9c9c9; /* Color de fondo al pasar el ratón por las filas */
+}
+
+/* Media Queries para diferentes tipos de pantallas */
+@media (max-width: 767px) {
+  .container {
+    padding: 10px;
+  }
+  
+  .table th,
+  .table td {
+    padding: 3px;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 5px;
+  }
+
+  .form-control {
+    padding: 5px;
+  }
+
+  .btn {
+    padding: 8px 15px;
+  }
+}
