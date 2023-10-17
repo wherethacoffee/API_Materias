@@ -2,6 +2,10 @@
 
 Este proyecto es un CRUD (Create, Read, Update, Delete) de materias que permite agregar, buscar, actualizar y eliminar registros. La tabla siempre se refresca después de una acción exitosa.
 
+## Página
+
+https://friendly-cucurucho-6e4492.netlify.app/
+
 ## Instrucciones
 
 ### Para agregar:
