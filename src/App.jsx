@@ -8,6 +8,32 @@ function App() {
   const { control, handleSubmit, reset, watch } = useForm()
   const [data, setData] = useState(null)
 
+  // Obtén el elemento del pie de página
+const derechosReservados = document.getElementById('derechos-reservados');
+
+// Función para verificar la posición de desplazamiento y ocultar el elemento si es necesario
+function ocultarDerechosReservados() {
+  // Obtén la posición de desplazamiento vertical del documento
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+  // Obtén la altura del documento visible en el navegador
+  const windowHeight = window.innerHeight;
+
+  // Obtén la altura total del contenido de la página
+  const pageHeight = document.body.offsetHeight;
+
+  // Si la posición de desplazamiento más la altura de la ventana es igual o mayor que la altura total de la página,
+  // significa que el usuario ha llegado al final de la página, por lo tanto, oculta el elemento
+  if (scrollTop + windowHeight >= pageHeight) {
+    derechosReservados.style.display = 'none';
+  } else {
+    derechosReservados.style.display = 'block';
+  }
+}
+
+// Agrega un evento de desplazamiento para llamar a la función ocultarDerechosReservados cuando el usuario se desplaza
+window.addEventListener('scroll', ocultarDerechosReservados);
+
 
   const onSubmit = async (formData) => {
     try {
@@ -120,6 +146,66 @@ function App() {
     }
   };
 
+  const handleUpdateClick = () => {
+    // Obtén los valores actuales del formulario
+    const formData = {
+      cve_plan: watch("cve_plan"),
+      grado: watch("grado"),
+      clave: watch("clave"),
+      materia: watch("materia"),
+      horas_prac: watch("horas_prac"),
+      horas_teo: watch("horas_teo"),
+      creditos: watch("creditos"),
+    };
+  
+    // Realiza la validación manualmente
+    if (formularioEsValido(formData)) {
+      // Si el formulario es válido, realiza la solicitud de actualización
+      handleUpdate(formData);
+    } else {
+      // Si el formulario no es válido, muestra un mensaje de error
+      Swal.fire({
+        title: 'Error',
+        icon: 'error',
+        text: 'Por favor, rellena todos los campos antes de actualizar.',
+      });
+    }
+  };
+
+  const handleDeleteClick = () => {
+    // Obtén los valores actuales del formulario
+    const cvePlan = watch("cve_plan");
+    const clave = watch("clave");
+  
+    // Realiza la validación manualmente
+    if (cvePlan && clave) {
+      // Si los campos de Cve plan y clave están llenos, realiza la solicitud de eliminación
+      handleDelete({ cve_plan: cvePlan, clave: clave });
+    } else {
+      // Si los campos de Cve plan y clave están vacíos, muestra un mensaje de error
+      Swal.fire({
+        title: 'Error',
+        icon: 'error',
+        text: 'Por favor, proporciona Cve plan y clave para eliminar.',
+      });
+    }
+  };
+  
+  
+  const formularioEsValido = (formData) => {
+    // Implementa lógica de validación aquí
+    // Por ejemplo, puedes verificar si todos los campos obligatorios están llenos
+    return (
+      formData.cve_plan &&
+      formData.grado &&
+      formData.clave &&
+      formData.materia &&
+      formData.horas_prac &&
+      formData.horas_teo &&
+      formData.creditos
+    );
+  };
+  
   const fetchOne = async (formData) => {
     const cve = formData["cve_plan"];
     const clv = formData["clave"];
@@ -146,7 +232,7 @@ function App() {
     Swal.fire({
       title: 'Error',
       icon: 'error',
-      text: 'La materia no existe',
+      text: 'La materia no esta registrada, favor de ingresar Cve Plan y Clave',
     });
   }
 } catch (error) {
@@ -172,7 +258,7 @@ function App() {
   return (
     <div>
       <nav className="navbar navbar-dark bg-dark">
-        <a className="navbar-brand">CRUD materias</a>
+        <a className="navbar-brand">CRUD Materias</a>
       </nav>
       <div className="container">
           <div className="col-md-5">
@@ -180,14 +266,12 @@ function App() {
               <div className="card-body">
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <div className="form-group">
-                    <h4>Rellena los campos para registrar</h4>
-                    <h5>Para buscar, eliminar o actualizar solo rellena Cve plan y clave</h5>
                     <label>Cve Plan</label>
                     <Controller
                       name="cve_plan"
                       control={control}
                       defaultValue=""
-                      render={({ field }) => <input {...field} className="form-control" type='number'/>}
+                      render={({ field }) => <input {...field} className="form-control" type='number' required/>}
                     />
                   </div>
                   <div className="form-group">
@@ -196,7 +280,7 @@ function App() {
                       name="grado"
                       control={control}
                       defaultValue=""
-                      render={({ field }) => <input {...field} className="form-control" type='number'/>}
+                      render={({ field }) => <input {...field} className="form-control" type='number' required/>}
                     />
                   </div>
                   <div className="form-group">
@@ -205,7 +289,7 @@ function App() {
                       name="clave"
                       control={control}
                       defaultValue=""
-                      render={({ field }) => <input {...field} className="form-control" type='number'/>}
+                      render={({ field }) => <input {...field} className="form-control" type='number' required/>}
                     />
                   </div>
                   <div className="form-group">
@@ -214,7 +298,7 @@ function App() {
                       name="materia"
                       control={control}
                       defaultValue=""
-                      render={({ field }) => <input {...field} className="form-control"type='text' />}
+                      render={({ field }) => <input {...field} className="form-control"type='text' required/>}
                     />
                   </div>
                   <div className="form-group">
@@ -223,7 +307,7 @@ function App() {
                       name="horas_prac"
                       control={control}
                       defaultValue=""
-                      render={({ field }) => <input {...field} className="form-control" type='number'/>}
+                      render={({ field }) => <input {...field} className="form-control" type='number' required/>}
                     />
                   </div>
                   <div className="form-group">
@@ -232,7 +316,7 @@ function App() {
                       name="horas_teo"
                       control={control}
                       defaultValue=""
-                      render={({ field }) => <input {...field} className="form-control" type='number'/>}
+                      render={({ field }) => <input {...field} className="form-control" type='number' required/>}
                     />
                   </div>
                   <div className="form-group">
@@ -241,7 +325,7 @@ function App() {
                       name="creditos"
                       control={control}
                       defaultValue=""
-                      render={({ field }) => <input {...field} className="form-control" type='number'/>}
+                      render={({ field }) => <input {...field} className="form-control" type='number' required/>}
                     />
                   </div>
                   <button type="submit" className="btn btn-primary">
@@ -256,31 +340,21 @@ function App() {
                       })}>
                     Buscar
                   </button>
-                  <button 
-                    type="button" 
+                  <button
+                    type="button"
                     className="btn btn-info"
-                    onClick={() => handleUpdate({
-                      cve_plan: watch("cve_plan"),
-                      grado: watch("grado"),
-                      clave: watch("clave"),
-                      materia: watch("materia"),
-                      horas_prac: watch("horas_prac"),
-                      horas_teo: watch("horas_teo"),
-                      creditos: watch("creditos"),
-                    })}
+                    onClick={handleUpdateClick}
                   >
-                    Actualizar
+                  Actualizar
                   </button>
-                  <button 
-                    type="button" 
-                    className="btn btn-danger"
-                    onClick={() => handleDelete({
-                      cve_plan: watch("cve_plan"), 
-                      clave: watch("clave")
-                    })}
-                  >
-                    Eliminar
+                  <button
+  type="button"
+  className="btn btn-danger"
+  onClick={handleDeleteClick}
+>
+  Eliminar
                   </button>
+
                 </form>
               </div>
             </div>
@@ -314,6 +388,13 @@ function App() {
                 ))}
               </tbody>
             </table>
+          </div>
+          <div>
+          <div>
+            <footer className="footer" class="footer derechos-reservados" id="derechos-reservados">
+              <p>&copy; 2023 Todos los derechos reservados Ricardo Rodriguez</p>
+            </footer>
+          </div>
           </div>
       </div>
       </div>
