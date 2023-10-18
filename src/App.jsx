@@ -8,32 +8,6 @@ function App() {
   const { control, handleSubmit, reset, watch } = useForm()
   const [data, setData] = useState(null)
 
-  // Obtén el elemento del pie de página
-const derechosReservados = document.getElementById('derechos-reservados');
-
-// Función para verificar la posición de desplazamiento y ocultar el elemento si es necesario
-function ocultarDerechosReservados() {
-  // Obtén la posición de desplazamiento vertical del documento
-  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-  // Obtén la altura del documento visible en el navegador
-  const windowHeight = window.innerHeight;
-
-  // Obtén la altura total del contenido de la página
-  const pageHeight = document.body.offsetHeight;
-
-  // Si la posición de desplazamiento más la altura de la ventana es igual o mayor que la altura total de la página,
-  // significa que el usuario ha llegado al final de la página, por lo tanto, oculta el elemento
-  if (scrollTop + windowHeight >= pageHeight) {
-    derechosReservados.style.display = 'none';
-  } else {
-    derechosReservados.style.display = 'block';
-  }
-}
-
-// Agrega un evento de desplazamiento para llamar a la función ocultarDerechosReservados cuando el usuario se desplaza
-window.addEventListener('scroll', ocultarDerechosReservados);
-
 
   const onSubmit = async (formData) => {
     try {
